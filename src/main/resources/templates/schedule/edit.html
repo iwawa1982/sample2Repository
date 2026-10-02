@@ -17,8 +17,13 @@
 		  th:object="${schedule}"
 		  method="post">
 
-		<!-- ID -->
+		<!--
+			どの予定を更新するのか分かるように
+			IDも送信する
+		画面上には表示しない
+		-->
 		<input type="hidden" th:field="*{id}">
+
 
 		<!-- 予定日 -->
 		<div>
@@ -28,6 +33,7 @@
 
 		<br>
 
+
 		<!-- 予定 -->
 		<div>
 			<label>予定</label>
@@ -35,6 +41,7 @@
 		</div>
 
 		<br>
+
 
 		<!-- 詳細 -->
 		<div>
@@ -44,13 +51,17 @@
 
 		<br>
 
+
 		<!-- 更新ボタン -->
 		<input type="submit" value="更新">
 
 	</form>
 
+
 	<br>
 
+
+	<!-- 予定一覧へ戻る -->
 	<a th:href="@{/schedules}">
 		予定一覧へ戻る
 	</a>
