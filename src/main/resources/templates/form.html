@@ -18,7 +18,30 @@
 		
 	</div>
 	<br>
-	<!---->
+	<!--予定名-->
+	<div>
+		<label>予定</label>
+		<input type ="text" name="title">
+		
+		
+	</div>
+	<!--詳細-->
+	<div>
+		<label>詳細</label>
+	<textarea name ="detail"></textarea>
+	</div>
+	
+	<br>
+	
+	<!--登録ボタン-->
+	<input type="submit"value="登録">
+	
 </form>
+
+<br>
+
+<!--予定一覧へ戻る-->
+
+<a th:href="@{/schedules}">予定一覧へ戻る</a>
 </body>
 </html>
