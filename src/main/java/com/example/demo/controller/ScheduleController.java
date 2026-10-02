@@ -115,10 +115,15 @@ public class ScheduleController {
 		return "schedule/list";
 	}
 	
-	// 新規登録画面
+	// 新規登録画面を表示
 	
 	@GetMapping("/from")
-	public String showForm() {
+	public String showForm(Model model) {
+		Schedule schedule =new Schedule();
+		
+		//HTMLへ渡す
+		model.addAttribute("schedule",schedule);
+		
 		
 		return "schedule/form";
 		
