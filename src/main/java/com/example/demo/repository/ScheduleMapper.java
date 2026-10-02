@@ -47,24 +47,22 @@ public interface ScheduleMapper {
 	Schedule selectById(Integer id);
 
 
+	// IDを指定して予定を更新する
+	@Update("""
+		UPDATE schedules
+		SET
+			schedule_date = #{scheduleDate},
+			title = #{title},
+			detail = #{detail}
+		WHERE id = #{id}
+		""")
+	void update(Schedule schedule);
+
+
 	// IDを指定して予定を1件削除する
 	@Delete("""
 		DELETE FROM schedules
 		WHERE id = #{id}
 		""")
 	void deleteById(Integer id);
-	
-	//IDを指定して予定を更新
-	@Update("""
-			UPDATE schedules
-			SET
-			schedule_date =#{scheduleDate},
-			title =#{title},
-			detail =#{datail}
-			WHERE id =#{id}
-			
-			""")
-	
-	void update(Schedule schedule);
-	
 }

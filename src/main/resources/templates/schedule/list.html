@@ -161,6 +161,7 @@
 				<th>日付</th>
 				<th>予定</th>
 				<th>詳細</th>
+				<th>操作</th>
 			</tr>
 
 		</thead>
@@ -187,6 +188,30 @@
 				<!-- 詳細 -->
 				<td th:text="${schedule.detail}">
 					10:00から
+				</td>
+
+				<!-- 編集・削除 -->
+				<td>
+
+					<!-- 編集 -->
+					<a th:href="@{/schedules/edit(id=${schedule.id})}">
+						編集
+					</a>
+
+					<!-- 削除 -->
+					<form th:action="@{/schedules/delete}"
+						  method="post"
+						  style="display: inline;">
+
+						<!-- 削除する予定のID -->
+						<input type="hidden"
+							   name="id"
+							   th:value="${schedule.id}">
+
+						<input type="submit" value="削除">
+
+					</form>
+
 				</td>
 
 			</tr>
