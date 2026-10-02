@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<!-- list.html -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>スケジュール管理</title>
+
+<style>
+
+	/* カレンダーのマス */
+	.calendar td {
+		width: 50px;
+		height: 40px;
+		text-align: center;
+	}
+
+	/* 日曜日 */
+	.calendar td:first-child {
+		background-color: red;
+	}
+
+	/* 土曜日 */
+	.calendar td:last-child {
+		background-color: lightblue;
+	}
+
+	/* 予定がある日 */
+	/* 土日であっても予定がある場合はこちらを優先 */
+	.calendar td.scheduled {
+		background-color: orange;
+	}
+
+</style>
+
+</head>
+
+<body>
+
+	<h2>スケジュール管理</h2>
+
+	<hr>
+
+
+	<!-- ============================= -->
+	<!-- 年月・前月・翌月 -->
+	<!-- ============================= -->
+
+	<h3>
+
+		<!-- 前月 -->
+		<a th:href="@{/schedules(year=${previousYear}, month=${previousMonth})}">
+			&lt;
+		</a>
+
+		<!-- 現在表示している年月 -->
+		<span th:text="${year}">2026</span>年
+		<span th:text="${month}">9</span>月
+
+		<!-- 翌月 -->
+		<a th:href="@{/schedules(year=${nextYear}, month=${nextMonth})}">
+			&gt;
+		</a>
+
+	</h3>
+
+
+	<!-- ============================= -->
+	<!-- カレンダー -->
+	<!-- ============================= -->
+
+	<table border="1" class="calendar">
+
+		<!-- 曜日 -->
+		<thead>
+
+			<tr>
+				<th>日</th>
+				<th>月</th>
+				<th>火</th>
+				<th>水</th>
+				<th>木</th>
+				<th>金</th>
+				<th>土</th>
+			</tr>
+
+		</thead>
+
+
+		<!-- 日付 -->
+		<tbody>
+
+			<!-- 6週間 -->
+			<tr th:each="week : ${#numbers.sequence(0, 5)}">
+
+				<!-- 1週間は7日 -->
+				<th:block
+					th:each="dayOfWeek : ${#numbers.sequence(0, 6)}">
+
+					<!--
+						このマスの日付を計算する
+
+						例：
+						2026年9月1日は火曜日なので
+						firstDayOfWeek = 2
+					-->
+					<th:block
+						th:with="day=${week * 7
+							+ dayOfWeek
+							- firstDayOfWeek
+							+ 1}">
+
+						<!--
+							予定がある日の場合、
+							scheduledクラスを追加する
+						-->
+						<td th:classappend="${day >= 1
+								and day <= lengthOfMonth
+								and #lists.contains(scheduledDays, day)}
+								? 'scheduled' : ''">
+
+							<!--
+								1日～月末の場合だけ
+								日付を表示する
+							-->
+							<span
+								th:if="${day >= 1
+									and day <= lengthOfMonth}"
+								th:text="${day}">
+							</span>
+
+						</td>
+
+					</th:block>
+
+				</th:block>
+
+			</tr>
+
+		</tbody>
+
+	</table>
+
+
+	<br>
+
+
+	<!-- ============================= -->
+	<!-- 予定一覧 -->
+	<!-- ============================= -->
+
+	<h3>予定一覧</h3>
+
+	<table border="1">
+
+		<thead>
+
+			<tr>
+				<th>日付</th>
+				<th>予定</th>
+				<th>詳細</th>
+			</tr>
+
+		</thead>
+
+
+		<tbody>
+
+			<!--
+				Controllerから渡された
+				schedulesを1件ずつ取り出す
+			-->
+			<tr th:each="schedule : ${schedules}">
+
+				<!-- 予定日 -->
+				<td th:text="${schedule.scheduleDate}">
+					2026-09-15
+				</td>
+
+				<!-- 予定名 -->
+				<td th:text="${schedule.title}">
+					病院
+				</td>
+
+				<!-- 詳細 -->
+				<td th:text="${schedule.detail}">
+					10:00から
+				</td>
+
+			</tr>
+
+		</tbody>
+
+	</table>
+
+
+	<br>
+
+
+	<!-- ============================= -->
+	<!-- 新規登録 -->
+	<!-- ============================= -->
+
+	<a href="#">
+		新規登録
+	</a>
+
+
+	<br>
+	<br>
+
+
+	<!-- ============================= -->
+	<!-- メニュー画面へ戻る -->
+	<!-- ============================= -->
+
+	<a th:href="@{/}">
+		メニューへ戻る
+	</a>
+
+
+</body>
+
+</html>
