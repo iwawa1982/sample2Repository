@@ -18,11 +18,11 @@ import com.example.demo.repository.ScheduleMapper;
 public class ScheduleController {
 
 	private final ScheduleMapper scheduleMapper;
-	
+
 	public ScheduleController(ScheduleMapper scheduleMapper) {
 		this.scheduleMapper= scheduleMapper;
 	}
-	
+
 	@GetMapping
 	public String list(
 			@RequestParam(required = false) Integer year,
@@ -71,10 +71,10 @@ public class ScheduleController {
 		// =============================
 
 		List<Schedule> schedules = scheduleMapper.selectAll();
-		
+
 		//表示中の月予定を入れるリスト
 		List<Schedule> monthlySchedules =new ArrayList<>();
-		
+
 
 		//予定がある日を格納するリスト
 		List<Integer> scheduledDays = new ArrayList<>();
@@ -85,9 +85,9 @@ public class ScheduleController {
 			//現在表示している年月日と同じ予定か確認
 			if(schedule.getScheduleDate().getYear()==year
 					&& schedule.getScheduleDate().getMonthValue()==month) {
-//表示中の月の予定として追加
+				//表示中の月の予定として追加
 				monthlySchedules.add(schedule);
-				
+
 				//「日」の部分をリストに追加
 				scheduledDays.add(
 						schedule.getScheduleDate().getDayOfMonth()
@@ -108,38 +108,81 @@ public class ScheduleController {
 
 		return "schedule/list";
 	}
-	
+
 	// 新規登録画面を表示
-	
+
 	@GetMapping("/form")
 	public String showForm(Model model) {
 		Schedule schedule =new Schedule();
-		
+
 		//HTMLへ渡す
 		model.addAttribute("schedule",schedule);
-	
+
 		return "schedule/form";
 	}
-		//予定登録処理
+	
+	//編集画面を表示
+	
+	@GetMapping("/edit")
+	public String showEdit(
+			@RequestParam Integer id,
+			Model model
+			) {
 		
-		@PostMapping("/register")
-		public String register(Schedule schedule) {
-			
-			
-			//入力された予定をDBへ登録
-			
-			scheduleMapper.insert(schedule);
-			
-			//入力された内容をコンソールに表示
-			System.out.println("予定日:"+ schedule.getScheduleDate());
-			System.out.println("予定:"+ schedule.getTitle());
-			System.out.println("詳細："+schedule.getDetail());
-			
-			
-			
-			//登録後は予定一覧へ移動
+		//IDを使ってDBから予定を１件取得
+		Schedule schedule =scheduleMapper.selectById(id);
+		
+		//取得した予定をHTMLへ渡す
+		model.addAttribute("schedule",schedule);
 		
 		
+		
+		//編集画面を表示
+		return "schedule/edit";
+	}
+	
+	//予定登録処理
+
+	@PostMapping("/register")
+	public String register(Schedule schedule) {
+
+
+		//入力された予定をDBへ登録
+
+		scheduleMapper.insert(schedule);
+
+		//入力された内容をコンソールに表示
+		System.out.println("予定日:"+ schedule.getScheduleDate());
+		System.out.println("予定:"+ schedule.getTitle());
+		System.out.println("詳細："+schedule.getDetail());
+		//登録後は予定一覧へ移動
+
+
+				return "redirect:/schedules";
+	}
+	
+	@PostMapping("/delete")
+	public String delete(@RequestParam Integer id) {
+
+		//指定されたIDの予定をDBから削除
+		scheduleMapper.deleteById(id);
+
+
+
+		//登録後は予定一覧へ移動
+
+
 		return "redirect:/schedules";
 	}
+	//予定更新処理
+	@PostMapping("/update")
+	public String update(Schedule schedule) {
+		
+		//入力された内容でDBを更新
+		scheduleMapper.update(schedule);
+		
+		//更新後は予定一覧へ
+		return "redirect:/schedules";
+	}
+
 }
