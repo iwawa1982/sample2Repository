@@ -7,11 +7,11 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Schedule;
-
 @Controller
 @RequestMapping("/schedules")
 public class ScheduleController {
@@ -117,15 +117,30 @@ public class ScheduleController {
 	
 	// 新規登録画面を表示
 	
-	@GetMapping("/from")
+	@GetMapping("/form")
 	public String showForm(Model model) {
 		Schedule schedule =new Schedule();
 		
 		//HTMLへ渡す
 		model.addAttribute("schedule",schedule);
-		
-		
+	
 		return "schedule/form";
+	}
+		//予定登録処理
 		
+		@PostMapping("/register")
+		public String register(Schedule schedule) {
+			
+			//入力された内容をコンソールに表示
+			System.out.println("予定日:"+ schedule.getScheduleDate());
+			System.out.println("予定:"+ schedule.getTitle());
+			System.out.println("詳細："+schedule.getDetail());
+			
+			
+			
+			//登録後は予定一覧へ移動
+		
+		
+		return "redirect:/schedules";
 	}
 }
