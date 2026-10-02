@@ -12,10 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Schedule;
+import com.example.demo.repository.ScheduleMapper;
 @Controller
 @RequestMapping("/schedules")
 public class ScheduleController {
 
+	private final ScheduleMapper scheduleMapper;
+	
+	public ScheduleController(ScheduleMapper scheduleMapper) {
+		this.scheduleMapper= scheduleMapper;
+	}
+	
 	@GetMapping
 	public String list(
 			@RequestParam(required = false) Integer year,
@@ -64,25 +71,25 @@ public class ScheduleController {
 		// =============================
 
 		// 予定一覧を作成
-		List<Schedule> schedules = new ArrayList<>();
-
+		//List<Schedule> schedules = new ArrayList<>();
+		List<Schedule> schedules = scheduleMapper.selectAll();
 		// 1件目
-		Schedule schedule1 = new Schedule();
-		schedule1.setId(1);
-		schedule1.setScheduleDate(LocalDate.of(2026, 9, 15));
-		schedule1.setTitle("病院");
-		schedule1.setDetail("10:00から");
-
-		schedules.add(schedule1);
+//		Schedule schedule1 = new Schedule();
+//		schedule1.setId(1);
+//		schedule1.setScheduleDate(LocalDate.of(2026, 9, 15));
+//		schedule1.setTitle("病院");
+//		schedule1.setDetail("10:00から");
+//
+//		schedules.add(schedule1);
 
 		// 2件目
-		Schedule schedule2 = new Schedule();
-		schedule2.setId(2);
-		schedule2.setScheduleDate(LocalDate.of(2026, 9, 24));
-		schedule2.setTitle("面接");
-		schedule2.setDetail("13:00から");
-
-		schedules.add(schedule2);
+//		Schedule schedule2 = new Schedule();
+//		schedule2.setId(2);
+//		schedule2.setScheduleDate(LocalDate.of(2026, 9, 24));
+//		schedule2.setTitle("面接");
+//		schedule2.setDetail("13:00から");
+//
+//		schedules.add(schedule2);
 
 		//予定がある日を格納するリスト
 		List<Integer> scheduledDays = new ArrayList<>();
@@ -130,6 +137,11 @@ public class ScheduleController {
 		
 		@PostMapping("/register")
 		public String register(Schedule schedule) {
+			
+			
+			//入力された予定をDBへ登録
+			
+			scheduleMapper.insert(schedule);
 			
 			//入力された内容をコンソールに表示
 			System.out.println("予定日:"+ schedule.getScheduleDate());

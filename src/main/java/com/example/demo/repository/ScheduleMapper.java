@@ -1,7 +1,10 @@
 package com.example.demo.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import com.example.demo.entity.Schedule;
 
@@ -14,4 +17,17 @@ public interface ScheduleMapper {
 		VALUES(#{scheduleDate}, #{title}, #{detail})
 		""")
 	void insert(Schedule schedule);
+
+
+	// 予定をすべて取得する
+	@Select("""
+		SELECT
+			id,
+			schedule_date AS scheduleDate,
+			title,
+			detail
+		FROM schedules
+		ORDER BY schedule_date
+		""")
+	List<Schedule> selectAll();
 }
