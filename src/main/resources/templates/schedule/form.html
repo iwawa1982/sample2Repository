@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>予定登録</title>
+</head>
+
+<body>
+
+	<h2>予定登録</h2>
+
+	<hr>
+
+	<form th:action="@{/schedules/register}"
+		  th:object="${schedule}"
+		  method="post">
+
+		<!-- 予定日 -->
+		<div>
+			<label>予定日</label>
+			<input type="date" th:field="*{scheduleDate}">
+		</div>
+
+		<br>
+
+		<!-- 予定 -->
+		<div>
+			<label>予定</label>
+			<input type="text" th:field="*{title}">
+		</div>
+
+		<br>
+
+		<!-- 詳細 -->
+		<div>
+			<label>詳細</label>
+			<textarea th:field="*{detail}"></textarea>
+		</div>
+
+		<br>
+
+		<!-- 登録ボタン -->
+		<input type="submit" value="登録">
+
+	</form>
+
+	<br>
+
+	<a th:href="@{/schedules}">
+		予定一覧へ戻る
+	</a>
+
+</body>
+
+</html>
