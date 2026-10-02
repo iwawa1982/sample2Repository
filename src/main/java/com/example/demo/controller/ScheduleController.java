@@ -67,29 +67,14 @@ public class ScheduleController {
 		model.addAttribute("nextMonth", nextMonth.getMonthValue());
 
 		// =============================
-		// ダミーの予定データ
+		// 予定データ
 		// =============================
 
-		// 予定一覧を作成
-		//List<Schedule> schedules = new ArrayList<>();
 		List<Schedule> schedules = scheduleMapper.selectAll();
-		// 1件目
-//		Schedule schedule1 = new Schedule();
-//		schedule1.setId(1);
-//		schedule1.setScheduleDate(LocalDate.of(2026, 9, 15));
-//		schedule1.setTitle("病院");
-//		schedule1.setDetail("10:00から");
-//
-//		schedules.add(schedule1);
-
-		// 2件目
-//		Schedule schedule2 = new Schedule();
-//		schedule2.setId(2);
-//		schedule2.setScheduleDate(LocalDate.of(2026, 9, 24));
-//		schedule2.setTitle("面接");
-//		schedule2.setDetail("13:00から");
-//
-//		schedules.add(schedule2);
+		
+		//表示中の月予定を入れるリスト
+		List<Schedule> monthlySchedules =new ArrayList<>();
+		
 
 		//予定がある日を格納するリスト
 		List<Integer> scheduledDays = new ArrayList<>();
@@ -100,7 +85,9 @@ public class ScheduleController {
 			//現在表示している年月日と同じ予定か確認
 			if(schedule.getScheduleDate().getYear()==year
 					&& schedule.getScheduleDate().getMonthValue()==month) {
-
+//表示中の月の予定として追加
+				monthlySchedules.add(schedule);
+				
 				//「日」の部分をリストに追加
 				scheduledDays.add(
 						schedule.getScheduleDate().getDayOfMonth()
@@ -117,7 +104,7 @@ public class ScheduleController {
 
 
 		//予定一覧もHTMLへわたす
-		model.addAttribute("schedules",schedules);
+		model.addAttribute("schedules",monthlySchedules);
 
 		return "schedule/list";
 	}
