@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleafy.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>メニュー</title>
@@ -8,6 +9,16 @@
 
 	<h2>メニュー画面</h2>
 	<hr>
+	<p>
+	<span th:text="${username}">ユーザー名</span>
+		さん、こんにちは
+		
+	</p>
 	<a th:href="@{/schedules}">スケジュール管理</a>
+	
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="ログアウト">
+		
+	</form>
 </body>
 </html>

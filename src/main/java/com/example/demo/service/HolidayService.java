@@ -21,7 +21,7 @@ public class HolidayService {
 			"https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv";
 
 	// 祝日のCSVデータを取得
-	public String getHoliday() {
+    public String getHoliday() {
 
 		// HTTP通信をするためのクライアントを作成
 		HttpClient client = HttpClient.newHttpClient();
