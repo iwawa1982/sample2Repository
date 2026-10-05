@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +14,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Schedule;
 import com.example.demo.repository.ScheduleMapper;
+import com.example.demo.service.HolidayService;
+
 @Controller
 @RequestMapping("/schedules")
 public class ScheduleController {
 
 	private final ScheduleMapper scheduleMapper;
 
-	public ScheduleController(ScheduleMapper scheduleMapper) {
-		this.scheduleMapper= scheduleMapper;
+	private final HolidayService holidayService;
+	
+	public ScheduleController(
+			ScheduleMapper scheduleMapper,
+			HolidayService holidayService) {
+
+		this.scheduleMapper = scheduleMapper;
+		this.holidayService = holidayService;
 	}
 
 	@GetMapping
@@ -29,6 +38,15 @@ public class ScheduleController {
 			@RequestParam(required = false) Integer month,
 			Model model) {
 
+		 // 内閣府から祝日データを取得
+	//    String holidayCsv = holidayService.getHoliday();
+
+	    // 取得した祝日データをコンソールに表示
+	 // 取得した祝日データをコンソールに表示
+	//    System.out.println("===== 祝日CSVここから =====");
+	//    System.out.println(holidayCsv);
+	//    System.out.println("===== 祝日CSVここまで =====");
+		
 		// 今日の日付を取得
 		LocalDate today = LocalDate.now();
 
@@ -38,6 +56,11 @@ public class ScheduleController {
 			month = today.getMonthValue();
 		}
 
+		
+		//祝日データを取得
+		
+		Map<LocalDate,String> holidays = holidayService.getHolidayMap();
+		
 		// 表示する月の1日
 		LocalDate currentMonth = LocalDate.of(year, month, 1);
 
@@ -60,6 +83,9 @@ public class ScheduleController {
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 
+		
+		//祝日データをHTMLへわたす
+		model.addAttribute("holidays",holidays);
 		model.addAttribute("previousYear", previousMonth.getYear());
 		model.addAttribute("previousMonth", previousMonth.getMonthValue());
 

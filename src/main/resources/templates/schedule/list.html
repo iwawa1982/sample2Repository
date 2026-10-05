@@ -27,10 +27,20 @@
 		background-color: lightblue;
 	}
 
+	/* 祝日 */
+	.calendar td.holiday {
+		background-color: pink;
+	}
+
 	/* 予定がある日 */
 	/* 土日であっても予定がある場合はこちらを優先 */
 	.calendar td.scheduled {
 		background-color: orange;
+	}
+
+	/* 祝日名 */
+	.holiday-name {
+		font-size: 10px;
 	}
 
 </style>
@@ -105,21 +115,32 @@
 						例：
 						2026年9月1日は火曜日なので
 						firstDayOfWeek = 2
+
+						さらにdateには
+						2026-09-01のようなLocalDateを入れる
 					-->
 					<th:block
-						th:with="day=${week * 7
-							+ dayOfWeek
-							- firstDayOfWeek
-							+ 1}">
+						th:with="
+							day=${week * 7 + dayOfWeek - firstDayOfWeek + 1},
+							date=${day >= 1 and day <= lengthOfMonth
+								? T(java.time.LocalDate).of(year, month, day)
+								: null}">
+
 
 						<!--
-							予定がある日の場合、
+							祝日の場合はholidayクラス、
+							それ以外で予定がある場合は
 							scheduledクラスを追加する
 						-->
-						<td th:classappend="${day >= 1
-								and day <= lengthOfMonth
-								and #lists.contains(scheduledDays, day)}
-								? 'scheduled' : ''">
+						<td th:classappend="
+							${date != null and holidays.containsKey(date)}
+								? 'holiday'
+								: (${day >= 1
+									and day <= lengthOfMonth
+									and #lists.contains(scheduledDays, day)}
+									? 'scheduled'
+									: '')">
+
 
 							<!--
 								1日～月末の場合だけ
@@ -130,6 +151,23 @@
 									and day <= lengthOfMonth}"
 								th:text="${day}">
 							</span>
+
+
+							<br>
+
+
+							<!--
+								祝日の場合だけ
+								祝日名を表示する
+							-->
+							<span
+								class="holiday-name"
+								th:if="${date != null
+									and holidays.containsKey(date)}"
+								th:text="${holidays.get(date)}">
+								祝日名
+							</span>
+
 
 						</td>
 
@@ -190,6 +228,7 @@
 					10:00から
 				</td>
 
+
 				<!-- 編集・削除 -->
 				<td>
 
@@ -198,17 +237,22 @@
 						編集
 					</a>
 
+
 					<!-- 削除 -->
-					<form th:action="@{/schedules/delete}"
-						  method="post"
-						  style="display: inline;">
+					<form
+						th:action="@{/schedules/delete}"
+						method="post"
+						style="display: inline;">
 
 						<!-- 削除する予定のID -->
-						<input type="hidden"
-							   name="id"
-							   th:value="${schedule.id}">
+						<input
+							type="hidden"
+							name="id"
+							th:value="${schedule.id}">
 
-						<input type="submit" value="削除">
+						<input
+							type="submit"
+							value="削除">
 
 					</form>
 
