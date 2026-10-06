@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -18,5 +19,13 @@ public interface UserMapper {
 		WHERE username = #{username}
 		""")
 	User selectByUsername(String username);
+
+
+	// ユーザーを1件登録する
+	@Insert("""
+		INSERT INTO users(username, password)
+		VALUES(#{username}, #{password})
+		""")
+	void insert(User user);
 
 }
