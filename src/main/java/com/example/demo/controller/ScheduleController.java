@@ -232,7 +232,15 @@ public class ScheduleController {
 	}
 	//予定更新処理
 	@PostMapping("/update")
-	public String update(Schedule schedule) {
+	public String update(
+			@Valid
+			Schedule schedule,
+			BindingResult bindingResult) {
+		
+		//入力エラーがある場合
+		if(bindingResult.hasErrors()) {
+			return "schedule/edit";
+		}
 		
 		//入力された内容でDBを更新
 		scheduleMapper.update(schedule);
