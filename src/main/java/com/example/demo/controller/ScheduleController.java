@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -189,8 +192,16 @@ public class ScheduleController {
 	//予定登録処理
 
 	@PostMapping("/register")
-	public String register(Schedule schedule) {
+	public String register(
+			@Valid
+			Schedule schedule,
+			BindingResult bindingResult) {
 
+		
+		//入力エラーがある場合
+		if(bindingResult.hasErrors()) {
+			return "schedule/form";
+		}
 
 		//入力された予定をDBへ登録
 

@@ -21,6 +21,9 @@
 		<div>
 			<label>予定日</label>
 			<input type="date" th:field="*{scheduleDate}">
+		
+		<p th:if="${#fields.hasErrors('scheduleDate')}"
+		th:errors="*{scheduleDate}"></p>
 		</div>
 
 		<br>
