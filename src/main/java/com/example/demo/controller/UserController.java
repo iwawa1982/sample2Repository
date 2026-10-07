@@ -35,7 +35,11 @@ public class UserController {
 	//ユーザー登録画面を表示
 	
 	@GetMapping("/users/form")
-	public String showForm() {
+	public String showForm(Model model) {
+		
+		User user =new User();
+		
+		model.addAttribute("user", user);
 		
 		return "user/form";
 	}

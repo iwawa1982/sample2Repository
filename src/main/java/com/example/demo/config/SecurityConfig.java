@@ -9,7 +9,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+	SecurityFilterChain securityFilterChain(HttpSecurity http) 
+			throws Exception{
 
 		http
 		//ログインしていないと各画面を表示できない

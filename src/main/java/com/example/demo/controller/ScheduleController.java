@@ -167,6 +167,25 @@ public class ScheduleController {
 		return "schedule/edit";
 	}
 	
+	
+	//詳細画面を表示
+	
+	@GetMapping("/detail")
+	public String showDetail(
+			
+			@RequestParam Integer id,
+			Model model) {
+		
+		//IDを指定して予定を1件取得
+		Schedule schedule =scheduleMapper.selectById(id);
+		
+		//詳細画面に予定を渡す
+		model.addAttribute("schedule",schedule);
+		
+		return "schedule/detail";
+	}
+	
+	
 	//予定登録処理
 
 	@PostMapping("/register")

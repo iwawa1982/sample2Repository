@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotNull;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,7 @@ public class Schedule {
 	private Integer id;
 
 	// 予定日
+	@NotNull(message="予定日を入力してください")
 	private LocalDate scheduleDate;
 
 	// 予定名
